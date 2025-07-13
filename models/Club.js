@@ -14,6 +14,26 @@ const clubSchema = new mongoose.Schema({
     type: String,
     default: "https://via.placeholder.com/300", // default image in case none is provided
   },
+  category: {
+    type: String,
+    enum: [
+      "Technology",
+      "Music",
+      "Art",
+      "Dance",
+      "Literature",
+      "Photography",
+      "Drama",
+      "Science",
+      "Sports",
+      "Gaming",
+      "Business",
+      "Coding",
+      "Cultural",
+      "Others"
+    ],
+    default: "General",
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

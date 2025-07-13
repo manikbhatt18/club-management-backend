@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createClub,
   getAllClubs,
+  getClubById,
   joinClub,
   leaveClub,
   getMyClubs,
@@ -12,22 +13,21 @@ const {
   deleteClub,
 } = require("../controllers/clubController");
 
-const { isAuthenticated, isAdmin, isMember } = require("../middleware/auth");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
 
 // Admin-only
 router.post("/create", isAuthenticated, isAdmin, createClub);
 router.get("/members/:clubId", isAuthenticated, isAdmin, getClubMembers);
+router.put("/update/:clubId", isAuthenticated, isAdmin, updateClub);
+router.delete("/:clubId", isAuthenticated, isAdmin, deleteClub);
 
-// Member-only
-router.post("/join/:clubId", isAuthenticated, isMember, joinClub);
-router.post("/leave/:clubId", isAuthenticated, isMember, leaveClub);
-router.get("/my-clubs", isAuthenticated, isMember, getMyClubs);
+// All authenticated users (both admin and member)
+router.post("/join/:clubId", isAuthenticated, joinClub);
+router.post("/leave/:clubId", isAuthenticated, leaveClub);
+router.get("/my-clubs", isAuthenticated, getMyClubs);
 
 // Public for all authenticated users
 router.get("/all", isAuthenticated, getAllClubs);
-
-
-router.put("/:clubId", isAuthenticated, isAdmin, updateClub);
-router.delete("/:clubId", isAuthenticated, isAdmin, deleteClub);
+router.get("/:clubId", isAuthenticated, getClubById);
 
 module.exports = router;
